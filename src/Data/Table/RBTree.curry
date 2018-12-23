@@ -20,9 +20,10 @@ import qualified Data.RedBlackTree as RBT
 type TableRBT key a = RBT.RedBlackTree (key,a)
 
 --- Returns an empty table, i.e., an empty red-black tree.
-empty :: Eq key => TableRBT key a
-empty = RBT.empty (\ x y -> fst x == fst y)
-                  (\ x y -> fst x == fst y)
+empty :: Eq key => (key -> key -> Bool) -> TableRBT key _
+empty lt = RBT.empty (\ x y -> fst x == fst y)
+                     (\ x y -> fst x == fst y)
+                     (\ x y -> lt (fst x) (fst y))
 
 --- tests whether a given table is empty
 isEmpty :: TableRBT _ _ -> Bool
@@ -33,18 +34,18 @@ isEmpty = RBT.isEmpty
 --- @param t - a table (represented as a red-black tree)
 --- @return (Just v) if v is the value stored with key k,
 ---         otherwise Nothing is returned.
-lookup :: (Ord key, Ord a) => key -> TableRBT key a -> Maybe a
+lookup :: key -> TableRBT key a -> Maybe a
 lookup k = maybe Nothing (Just . snd) . RBT.lookup (k,failed)
 
 --- Inserts or updates an element in a table.
-update :: (Ord key, Ord a) => key -> a -> TableRBT key a -> TableRBT key a
+update :: key -> a -> TableRBT key a -> TableRBT key a
 update k e = RBT.update (k,e)
 
 --- Transforms the nodes of red-black tree into a list.
 toList :: TableRBT key a -> [(key,a)]
 toList = RBT.toList
 
-delete :: (Ord key, Ord a) => key -> TableRBT key a -> TableRBT key a
+delete :: key -> TableRBT key a -> TableRBT key a
 delete key = RBT.delete (key,failed)
 
 -- end of TableRBT

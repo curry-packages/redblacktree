@@ -15,7 +15,7 @@ import System.Random
 
 import Data.RedBlackTree
 
-intList2Tree = foldr update (empty (\ _ _ -> False) (==))
+intList2Tree = foldr update (empty (\ _ _ -> False) (==) (<))
 
 rndTree n =
   getRandomSeed >>= return . nub . take n . (flip nextIntRange 100000) >>=
