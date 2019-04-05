@@ -8,7 +8,7 @@
 --- @version December 2018
 ------------------------------------------------------------------------------
 
-import List(nub)
+import Data.List (nub)
 import Test.Prop
 
 import System.Random
